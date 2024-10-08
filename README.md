@@ -4,7 +4,6 @@
 
 - [Criteria](#criteria)
 - [Data](#data)
-- [Overview of the Analysis](#overview-of-the-analysis)
 - [Results](#results)
 - [Summary](#summary)
 - [References](#references)
