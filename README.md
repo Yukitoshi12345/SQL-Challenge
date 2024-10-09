@@ -77,7 +77,7 @@ This project utilises six CSV files to analyse employee and department relations
 | title_id | A unique identifier for each title, serving as the primary key in the Titles table. |
 | title | The job title (e.g., Engineer, Senior Staff). |
 
-
+<br>
 
 ## Results
 
