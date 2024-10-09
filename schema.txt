@@ -1,0 +1,38 @@
+Departments
+-
+dept_no INTEGER PK
+dept_name VARCHAR
+
+Department_Employee
+-
+emp_no INTEGER PK
+dept_no INTEGER NOT NULL
+
+Gym_ID INTEGER FK >- Gym.Gym_ID
+
+
+Department_Manager
+-
+dept_no INTEGER PK
+emp_no INTEGER
+
+Employees
+-
+Payment_ID INTEGER PK
+Member_ID INTEGER FK - Members.Member_ID
+CreditCard_Info INTEGER
+Billing_Zip INTEGER
+
+Salaries
+-
+Payment_ID INTEGER PK
+Member_ID INTEGER FK - Members.Member_ID
+CreditCard_Info INTEGER
+Billing_Zip INTEGER
+
+Titles
+-
+Payment_ID INTEGER PK
+Member_ID INTEGER FK - Members.Member_ID
+CreditCard_Info INTEGER
+Billing_Zip INTEGER
