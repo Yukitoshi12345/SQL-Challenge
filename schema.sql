@@ -1,5 +1,5 @@
 ﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- Link to schema: https://app.quickdatabasediagrams.com/#/d/eRqbwo
+-- Link to schema: https://app.quickdatabasediagrams.com/#/d/FA0Nzp
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
 
@@ -12,7 +12,7 @@ CREATE TABLE "Departments" (
 );
 
 CREATE TABLE "Dept_Emp" (
-    "emp_no" INTEGER   NOT NULL,
+    "emp_no" INT   NOT NULL,
     "dept_no" VARCHAR   NOT NULL
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE "Dept_Manager" (
 );
 
 CREATE TABLE "Employees" (
-    "emp_no" INTEGER   NOT NULL,
+    "emp_no" INT   NOT NULL,
     "emp_title_id" VARCHAR   NOT NULL,
     "birth_date" VARCHAR   NOT NULL,
     "first_name" VARCHAR   NOT NULL,
@@ -35,8 +35,8 @@ CREATE TABLE "Employees" (
 );
 
 CREATE TABLE "Salaries" (
-    "emp_no" INTEGER   NOT NULL,
-    "salary" INTEGER   NOT NULL
+    "emp_no" INT   NOT NULL,
+    "salary" INT   NOT NULL
 );
 
 CREATE TABLE "Titles" (
