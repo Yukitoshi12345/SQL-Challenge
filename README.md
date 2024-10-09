@@ -1,5 +1,15 @@
 <h1 align = "center"> SQL Challenge </h1>
 
+## Project Overview
+
+This project successfully reconstructed and analysed historical employee data from Pewlett Hackard, a fictional company, focussing on the workforce during the 1980s and 1990s. The task involved designing a relational database schema, importing data from six CSV files into a SQL database, and conducting comprehensive data analysis to gain insights into the company’s employment patterns.
+
+The project began with <b>Data Modelling</b>, where an Entity Relationship Diagram (ERD) was created to define table structures and relationships between employees, departments, titles, and salaries. Appropriate data types, primary keys, and foreign keys were assigned to maintain data integrity and establish connections across tables.
+
+Next, in the <b>Data Engineering</b> phase, the data from the CSV files was imported into a SQL database. Each table was carefully constructed, ensuring all required columns were defined with correct data types, constraints such as `NOT NULL`, and suitable length values. Foreign keys were used to reference related tables, accurately modelling the relationships outlined in the ERD.
+
+Finally, the <b>Data Analysis</b> phase involved executing SQL queries to answer specific questions about the employee records. These queries provided valuable insights, such as employee details, department assignments, managerial roles, hiring trends, and salary information. The analysis helped uncover trends in department composition, employment durations, and common employee names, contributing to a deeper understanding of Pewlett Hackard’s workforce during the late 20th century.
+
 ## Table of Contents
 
 - [Criteria](#criteria)
