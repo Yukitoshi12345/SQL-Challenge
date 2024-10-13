@@ -3,18 +3,9 @@
     dept_name VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE Dept_Emp (
-    emp_no INTEGER NOT NULL,
-        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no),
-    dept_no VARCHAR(4) NOT NULL,
-        FOREIGN KEY (dept_no) REFERENCES Departments(dept_no)
-);
-
-CREATE TABLE Dept_Manager (
-    dept_no VARCHAR(4) NOT NULL,
-        FOREIGN KEY (dept_no) REFERENCES Departments(dept_no),
-    emp_no INTEGER NOT NULL,
-        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no)
+CREATE TABLE Titles (
+    title_id VARCHAR(5) PRIMARY KEY NOT NULL,
+    title VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Employees (
@@ -34,7 +25,16 @@ CREATE TABLE Salaries (
     salary INTEGER NOT NULL
 );
 
-CREATE TABLE Titles (
-    title_id VARCHAR(5) PRIMARY KEY NOT NULL,
-    title VARCHAR(50) NOT NULL
+CREATE TABLE Dept_Emp (
+    emp_no INTEGER NOT NULL,
+        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no),
+    dept_no VARCHAR(4) NOT NULL,
+        FOREIGN KEY (dept_no) REFERENCES Departments(dept_no)
+);
+
+CREATE TABLE Dept_Manager (
+    dept_no VARCHAR(4) NOT NULL,
+        FOREIGN KEY (dept_no) REFERENCES Departments(dept_no),
+    emp_no INTEGER NOT NULL,
+        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no)
 );
