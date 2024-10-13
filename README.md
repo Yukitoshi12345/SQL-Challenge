@@ -119,9 +119,200 @@ This project utilises six CSV files to analyse employee and department relations
 
 ## Results
 
-The Entity Relationship Diagram (ERD) for this dataset was created using Quick Database Diagrams.
+### Data Modelling
+
+The Entity-Relationship Diagram (ERD) for the dataset was created using Quick Database Diagrams. This ERD effectively visualises the relationships between the entities such as employees, departments, salaries, and other associated tables, allowing for a clear understanding of how the data is structured.
 
 ![](images/schema_table.png)
+
+### Data Engineering
+
+A schema was developed for each of the six CSV files, with data types assigned based on the nature of the data in each file. Primary keys and foreign keys were set to maintain relational integrity, and constraints were added to ensure data validity. For instance, the employee table has `emp_no` as the primary key, and tables like `titles` and `salaries` reference this field as a foreign key to ensure that all records align correctly across tables.
+
+```
+CREATE TABLE Departments (
+    dept_no VARCHAR(4) PRIMARY KEY NOT NULL,
+    dept_name VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE Titles (
+    title_id VARCHAR(5) PRIMARY KEY NOT NULL,
+    title VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Employees (
+    emp_no INT PRIMARY KEY NOT NULL,
+    emp_title_id VARCHAR(5) NOT NULL,
+        FOREIGN KEY (emp_title_id) REFERENCES Titles(title_id),
+    birth_date DATE NOT NULL,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    sex VARCHAR(1) NOT NULL,
+    hire_date DATE NOT NULL
+);
+
+CREATE TABLE Salaries (
+    emp_no INTEGER NOT NULL,
+        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no),
+    salary INTEGER NOT NULL
+);
+
+CREATE TABLE Dept_Emp (
+    emp_no INTEGER NOT NULL,
+        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no),
+    dept_no VARCHAR(4) NOT NULL,
+        FOREIGN KEY (dept_no) REFERENCES Departments(dept_no)
+);
+
+CREATE TABLE Dept_Manager (
+    dept_no VARCHAR(4) NOT NULL,
+        FOREIGN KEY (dept_no) REFERENCES Departments(dept_no),
+    emp_no INTEGER NOT NULL,
+        FOREIGN KEY (emp_no) REFERENCES Employees(emp_no)
+);
+```
+
+### Data Analysis
+
+A set of SQL queries were used to extract valuable insights from the data, addressing key business questions:
+
+1. <b>Employee Salary Data:</b> A query was run to list each employee's employee number, last name, first name, sex, and salary, giving an overview of salary distribution across the workforce. This helps to identify gender diversity and salary levels among employees.
+
+```
+SELECT e.emp_no, e.last_name, e.first_name, e.sex, s.salary
+FROM Employees AS e
+INNER JOIN Salaries AS s
+ON e.emp_no = s.emp_no;
+```
+
+2. <b>Employees Hired in 1986:</b> By filtering the data based on hire dates, a list of employees who were hired in 1986 was generated. This analysis is useful for evaluating long-term employees.
+
+```
+SELECT first_name, last_name, hire_date
+FROM Employees
+WHERE extract(YEAR FROM hire_date) = 1986;
+```
+
+
+3. <b>Department Managers:</b> To identify the managers for each department, a query was run listing their department number, department name, and associated employee information. This provides visibility into the leadership structure of the organisation.
+
+```
+SELECT dm.dept_no, d.dept_name, dm.emp_no, e.last_name, e.first_name
+FROM Dept_Manager dm
+INNER JOIN Departments d
+ON dm.dept_no = d.dept_no
+INNER JOIN Employees e
+ON dm.emp_no = e.emp_no;
+
+-- OR
+
+SELECT dm.dept_no, 
+    (SELECT d.dept_name 
+     FROM Departments d 
+     WHERE d.dept_no = dm.dept_no) AS dept_name,
+    dm.emp_no,
+    (SELECT e.last_name 
+     FROM Employees e 
+     WHERE e.emp_no = dm.emp_no) AS last_name,
+    (SELECT e.first_name 
+     FROM Employees e 
+     WHERE e.emp_no = dm.emp_no) AS first_name
+FROM Dept_Manager dm;
+```
+
+4. <b>Employee Department Assignment:</b> A query was used to list the department number for each employee, along with their name and department. This helps in understanding how employees are distributed across various departments.
+
+```
+SELECT de.dept_no, e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM Dept_Emp de
+INNER JOIN Employees e
+ON de.emp_no = e.emp_no
+INNER JOIN Departments d
+ON de.dept_no = d.dept_no;
+
+-- OR
+
+SELECT de.dept_no, 
+       de.emp_no, 
+       (SELECT e.last_name 
+        FROM Employees e 
+        WHERE e.emp_no = de.emp_no) AS last_name, 
+       (SELECT e.first_name 
+        FROM Employees e 
+        WHERE e.emp_no = de.emp_no) AS first_name,
+       (SELECT d.dept_name 
+        FROM Departments d 
+        WHERE d.dept_no = de.dept_no) AS dept_name
+FROM Dept_Emp de;
+```
+
+
+5. <b>Employees Named Hercules B:</b> A specific query was executed to find employees whose first name is "Hercules" and whose last name starts with "B", showcasing the ability to filter based on specific name patterns.
+
+```
+SELECT first_name, last_name, sex
+FROM Employees
+WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
+```
+
+6. <b>Sales Department Employees:</b> A list was generated to identify all employees in the Sales department, including their employee numbers, last names, and first names. This information can be useful for managing or analyzing the performance of the Sales team.
+
+```
+SELECT Employees.emp_no, Employees.first_name, Employees.last_name
+FROM Employees
+INNER JOIN Dept_Emp
+ON Employees.emp_no = Dept_Emp.emp_no
+INNER JOIN Departments
+ON Dept_Emp.dept_no = Departments.dept_no
+WHERE Departments.dept_name = 'Sales';
+
+-- OR
+
+SELECT emp_no, first_name, last_name
+FROM Employees
+WHERE emp_no IN (
+	SELECT emp_no
+	FROM Dept_emp
+	WHERE dept_no IN (
+		SELECT dept_no
+		FROM Departments
+		WHERE dept_name = 'Sales'))
+ORDER BY emp_no;
+```
+
+7. <b>Sales and Development Departments Employees:</b> Similarly, a query was run to list employees working in either the Sales or Development departments, highlighting their department name, allowing cross-department comparisons.
+
+```
+SELECT e.emp_no, e.first_name, e.last_name
+FROM Employees AS e
+INNER JOIN Dept_Emp AS de
+ON e.emp_no = de.emp_no
+INNER JOIN Departments AS d
+ON de.dept_no = d.dept_no
+WHERE d.dept_name IN ('Sales', 'Development');
+
+-- OR
+
+SELECT emp_no, first_name, last_name
+FROM Employees
+WHERE emp_no IN (
+	SELECT emp_no
+	FROM Dept_Emp
+	WHERE dept_no IN (
+		(SELECT dept_no
+		FROM Departments
+		WHERE dept_name = 'Sales' OR dept_name = 'Development')))
+ORDER BY emp_no;
+```
+
+8. <b>Employee Last Name Frequency:</b> Finally, a query was executed to count how many employees share the same last name, ordered by frequency. This provides interesting insights into common last names within the organization.
+
+```
+SELECT last_name, COUNT(last_name) AS Frequency
+FROM Employees
+GROUP BY last_name
+ORDER BY Frequency DESC;
+```
 
 ## References
 
