@@ -257,13 +257,13 @@ WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
 6. <b>Sales Department Employees:</b> A list was generated to identify all employees in the Sales department, including their employee numbers, last names, and first names. This information can be useful for managing or analyzing the performance of the Sales team.
 
 ```pgsql
-SELECT Employees.emp_no, Employees.first_name, Employees.last_name
-FROM Employees
-INNER JOIN Dept_Emp
-ON Employees.emp_no = Dept_Emp.emp_no
-INNER JOIN Departments
-ON Dept_Emp.dept_no = Departments.dept_no
-WHERE Departments.dept_name = 'Sales';
+SELECT e.emp_no, e.first_name, e.last_name
+FROM Employees AS e
+INNER JOIN Dept_Emp AS de
+ON e.emp_no = de.emp_no
+INNER JOIN Departments AS d
+ON de.dept_no = d.dept_no
+WHERE d.dept_name = 'Sales';
 
 -- OR
 
