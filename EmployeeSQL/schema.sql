@@ -12,11 +12,11 @@ CREATE TABLE Employees (
     emp_no INT PRIMARY KEY NOT NULL,
     emp_title_id VARCHAR(5) NOT NULL,
         FOREIGN KEY (emp_title_id) REFERENCES Titles(title_id),
-    birth_date VARCHAR(10) NOT NULL,
+    birth_date DATE NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     sex VARCHAR(1) NOT NULL,
-    hire_date VARCHAR(10) NOT NULL,
+    hire_date DATE NOT NULL
 );
 
 CREATE TABLE Salaries (
