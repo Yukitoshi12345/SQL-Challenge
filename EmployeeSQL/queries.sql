@@ -18,14 +18,17 @@ INNER JOIN Employees e
 ON dm.emp_no = e.emp_no;
 
 -- 4. List the department number for each employee along with that employee’s employee number, last name, first name, and department name.
-SELECT Dept_Emp.dept_no, Employees.emp_no, Employees.last_name, Employees.first_name, Departments.dept_name
-FROM Dept_Emp
-INNER JOIN Employees
-ON Dept_Emp.emp_no = Employees.emp_no
-INNER JOIN Departments
-ON Dept_Emp.dept_no = Departments.dept_no;
+SELECT de.dept_no, e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM Dept_Emp de
+INNER JOIN Employees e
+ON de.emp_no = e.emp_no
+INNER JOIN Departments d
+ON de.dept_no = d.dept_no;
 
 -- 5. List first name, last name, and sex of each employee whose first name is Hercules and whose last name begins with the letter B.
+SELECT first_name, last_name, sex
+FROM Employees
+WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
 
 -- 6. List each employee in the Sales department, including their employee number, last name, and first name.
 
