@@ -10,15 +10,20 @@ FROM Employees
 WHERE extract(YEAR FROM hire_date) = 1986;
 
 -- 3. List the manager of each department along with their department number, department name, employee number, last name, and first name.
-SELECT Dept_Manager.dept_no, Departments.dept_name, Dept_Manager.emp_no, Employees.last_name, Employees.first_name
-FROM Dept_Manager
-INNER JOIN Departments
-ON Dept_Manager.dept_no = Departments.dept_no
-INNER JOIN Employees
-ON Dept_Manager.emp_no = Employees.emp_no
-
+SELECT dm.dept_no, d.dept_name, dm.emp_no, e.last_name, e.first_name
+FROM Dept_Manager dm
+INNER JOIN Departments d
+ON dm.dept_no = d.dept_no
+INNER JOIN Employees e
+ON dm.emp_no = e.emp_no;
 
 -- 4. List the department number for each employee along with that employee’s employee number, last name, first name, and department name.
+SELECT Dept_Emp.dept_no, Employees.emp_no, Employees.last_name, Employees.first_name, Departments.dept_name
+FROM Dept_Emp
+INNER JOIN Employees
+ON Dept_Emp.emp_no = Employees.emp_no
+INNER JOIN Departments
+ON Dept_Emp.dept_no = Departments.dept_no;
 
 -- 5. List first name, last name, and sex of each employee whose first name is Hercules and whose last name begins with the letter B.
 
