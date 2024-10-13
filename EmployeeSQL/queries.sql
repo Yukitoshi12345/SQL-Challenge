@@ -4,6 +4,9 @@ FROM Employees AS e
 INNER JOIN Salaries AS s
 ON e.emp_no = s.emp_no;
 
+-- Note: Subquery for this question takes ages to load.
+
+
 -- 2. List the first name, last name, and hire date for the employees who were hired in 1986.
 SELECT first_name, last_name, hire_date
 FROM Employees
@@ -17,6 +20,21 @@ ON dm.dept_no = d.dept_no
 INNER JOIN Employees e
 ON dm.emp_no = e.emp_no;
 
+-- OR
+
+SELECT dm.dept_no, 
+    (SELECT d.dept_name 
+     FROM Departments d 
+     WHERE d.dept_no = dm.dept_no) AS dept_name,
+    dm.emp_no,
+    (SELECT e.last_name 
+     FROM Employees e 
+     WHERE e.emp_no = dm.emp_no) AS last_name,
+    (SELECT e.first_name 
+     FROM Employees e 
+     WHERE e.emp_no = dm.emp_no) AS first_name
+FROM Dept_Manager dm;
+
 -- 4. List the department number for each employee along with that employee’s employee number, last name, first name, and department name.
 SELECT de.dept_no, e.emp_no, e.last_name, e.first_name, d.dept_name
 FROM Dept_Emp de
@@ -24,6 +42,21 @@ INNER JOIN Employees e
 ON de.emp_no = e.emp_no
 INNER JOIN Departments d
 ON de.dept_no = d.dept_no;
+
+-- OR
+
+SELECT de.dept_no, 
+       de.emp_no, 
+       (SELECT e.last_name 
+        FROM Employees e 
+        WHERE e.emp_no = de.emp_no) AS last_name, 
+       (SELECT e.first_name 
+        FROM Employees e 
+        WHERE e.emp_no = de.emp_no) AS first_name,
+       (SELECT d.dept_name 
+        FROM Departments d 
+        WHERE d.dept_no = de.dept_no) AS dept_name
+FROM Dept_Emp de;
 
 -- 5. List first name, last name, and sex of each employee whose first name is Hercules and whose last name begins with the letter B.
 SELECT first_name, last_name, sex
@@ -39,7 +72,7 @@ INNER JOIN Departments
 ON Dept_Emp.dept_no = Departments.dept_no
 WHERE Departments.dept_name = 'Sales';
 
--- or
+-- OR
 
 SELECT emp_no, first_name, last_name
 FROM Employees
@@ -54,15 +87,15 @@ ORDER BY emp_no;
 
 -- 7. List each employee in the Sales and Development departments, including their employee number, last name, first name, and department name.
 
-SELECT Employees.emp_no, Employees.first_name, Employees.last_name
-FROM Employees
-INNER JOIN Dept_Emp
-ON Employees.emp_no = Dept_Emp.emp_no
-INNER JOIN Departments
-ON Dept_Emp.dept_no = Departments.dept_no
-WHERE Departments.dept_name IN ('Sales', 'Development');
+SELECT e.emp_no, e.first_name, e.last_name
+FROM Employees AS e
+INNER JOIN Dept_Emp AS de
+ON e.emp_no = de.emp_no
+INNER JOIN Departments AS d
+ON de.dept_no = d.dept_no
+WHERE d.dept_name IN ('Sales', 'Development');
 
--- or
+-- OR
 
 SELECT emp_no, first_name, last_name
 FROM Employees
