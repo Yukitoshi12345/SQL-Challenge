@@ -4,14 +4,19 @@ FROM Employees AS e
 INNER JOIN Salaries AS s
 ON e.emp_no = s.emp_no;
 
-
 -- 2. List the first name, last name, and hire date for the employees who were hired in 1986.
 SELECT first_name, last_name, hire_date
 FROM Employees
 WHERE extract(YEAR FROM hire_date) = 1986;
 
-
 -- 3. List the manager of each department along with their department number, department name, employee number, last name, and first name.
+SELECT Dept_Manager.dept_no, Departments.dept_name, Dept_Manager.emp_no, Employees.last_name, Employees.first_name
+FROM Dept_Manager
+INNER JOIN Departments
+ON Dept_Manager.dept_no = Departments.dept_no
+INNER JOIN Employees
+ON Dept_Manager.emp_no = Employees.emp_no
+
 
 -- 4. List the department number for each employee along with that employee’s employee number, last name, first name, and department name.
 
