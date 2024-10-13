@@ -129,7 +129,7 @@ The Entity-Relationship Diagram (ERD) for the dataset was created using Quick Da
 
 A schema was developed for each of the six CSV files, with data types assigned based on the nature of the data in each file. Primary keys and foreign keys were set to maintain relational integrity, and constraints were added to ensure data validity. For instance, the employee table has `emp_no` as the primary key, and tables like `titles` and `salaries` reference this field as a foreign key to ensure that all records align correctly across tables.
 
-```
+```pgsql
 CREATE TABLE Departments (
     dept_no VARCHAR(4) PRIMARY KEY NOT NULL,
     dept_name VARCHAR(30) NOT NULL
@@ -178,7 +178,7 @@ A set of SQL queries were used to extract valuable insights from the data, addre
 
 1. <b>Employee Salary Data:</b> A query was run to list each employee's employee number, last name, first name, sex, and salary, giving an overview of salary distribution across the workforce. This helps to identify gender diversity and salary levels among employees.
 
-```
+```pgsql
 SELECT e.emp_no, e.last_name, e.first_name, e.sex, s.salary
 FROM Employees AS e
 INNER JOIN Salaries AS s
@@ -187,16 +187,15 @@ ON e.emp_no = s.emp_no;
 
 2. <b>Employees Hired in 1986:</b> By filtering the data based on hire dates, a list of employees who were hired in 1986 was generated. This analysis is useful for evaluating long-term employees.
 
-```
+```pgsql
 SELECT first_name, last_name, hire_date
 FROM Employees
 WHERE extract(YEAR FROM hire_date) = 1986;
 ```
 
-
 3. <b>Department Managers:</b> To identify the managers for each department, a query was run listing their department number, department name, and associated employee information. This provides visibility into the leadership structure of the organisation.
 
-```
+```pgsql
 SELECT dm.dept_no, d.dept_name, dm.emp_no, e.last_name, e.first_name
 FROM Dept_Manager dm
 INNER JOIN Departments d
@@ -222,7 +221,7 @@ FROM Dept_Manager dm;
 
 4. <b>Employee Department Assignment:</b> A query was used to list the department number for each employee, along with their name and department. This helps in understanding how employees are distributed across various departments.
 
-```
+```pgsql
 SELECT de.dept_no, e.emp_no, e.last_name, e.first_name, d.dept_name
 FROM Dept_Emp de
 INNER JOIN Employees e
@@ -249,7 +248,7 @@ FROM Dept_Emp de;
 
 5. <b>Employees Named Hercules B:</b> A specific query was executed to find employees whose first name is "Hercules" and whose last name starts with "B", showcasing the ability to filter based on specific name patterns.
 
-```
+```pgsql
 SELECT first_name, last_name, sex
 FROM Employees
 WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
@@ -257,7 +256,7 @@ WHERE first_name = 'Hercules' AND last_name LIKE 'B%';
 
 6. <b>Sales Department Employees:</b> A list was generated to identify all employees in the Sales department, including their employee numbers, last names, and first names. This information can be useful for managing or analyzing the performance of the Sales team.
 
-```
+```pgsql
 SELECT Employees.emp_no, Employees.first_name, Employees.last_name
 FROM Employees
 INNER JOIN Dept_Emp
@@ -282,7 +281,7 @@ ORDER BY emp_no;
 
 7. <b>Sales and Development Departments Employees:</b> Similarly, a query was run to list employees working in either the Sales or Development departments, highlighting their department name, allowing cross-department comparisons.
 
-```
+```pgsql
 SELECT e.emp_no, e.first_name, e.last_name
 FROM Employees AS e
 INNER JOIN Dept_Emp AS de
@@ -307,7 +306,7 @@ ORDER BY emp_no;
 
 8. <b>Employee Last Name Frequency:</b> Finally, a query was executed to count how many employees share the same last name, ordered by frequency. This provides interesting insights into common last names within the organization.
 
-```
+```pgsql
 SELECT last_name, COUNT(last_name) AS Frequency
 FROM Employees
 GROUP BY last_name
